@@ -1,34 +1,81 @@
 {
   "domain_title": "overheden & état civil",
-  "default_more_info_url": "https://www.service-public.fr/",
-  "search_sites": ["service-public.fr", "infofrankrijk.com", "nederlanders.fr"],
+  "default_more_info_url": "https://infofrankrijk.com/test-lexicon-test/",
+  "search_sites": ["infofrankrijk.com", "nederlanders.fr"],
   "terms": [
-    {
-      "nl": "gemeente",
-      "fr": "mairie",
-      "aliases": ["gemeentehuis"],
-      "cats": ["bestuur"],
-      "subcats": ["lokaal"],
-      "note": "Het lokale bestuursorgaan in Frankrijk is de mairie.",
-      "more_info_url": "https://www.service-public.fr/particuliers/vosdroits/N20175"
-    },
-    {
-      "nl": "geboorteakte",
-      "fr": "acte de naissance",
-      "aliases": [],
-      "cats": ["état civil"],
-      "subcats": ["geboorte"],
-      "note": "",
-      "more_info_url": "https://www.service-public.fr/particuliers/vosdroits/F1427"
-    },
-    {
-      "nl": "uittreksel",
-      "fr": "extrait",
-      "aliases": [],
-      "cats": ["document"],
-      "subcats": [],
-      "note": "Algemene term; vaak in combinatie met een document, bijv. extrait d'acte de naissance.",
-      "more_info_url": ""
-    }
+    { "nl": "gemeentehuis", "fr": "mairie", "cats": ["raad & bestuur"], "subcats": [], "note": "lokaal gemeentebestuur; kleine letter in lopende tekst", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "burgemeester", "fr": "maire", "cats": ["raad & bestuur"], "subcats": [], "note": "vrouwelijk: « la maire » of « madame la maire »", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "wethouder", "fr": "adjoint(e) au maire", "cats": ["raad & bestuur"], "subcats": [], "note": "portefeuillehouder; meerdere adjoints mogelijk", "aliases": ["schepen (Vlaams)"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "gemeenteraad", "fr": "conseil municipal", "cats": ["raad & bestuur"], "subcats": [], "note": "", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "burgerlijke stand", "fr": "état civil", "cats": ["burgerlijke stand"], "subcats": [], "note": "algemene balie/afdeling voor akten en wijzigingen", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "geboorteaangifte", "fr": "déclaration de naissance", "cats": ["uittreksels"], "subcats": ["geboorte"], "note": "binnen 5 dagen na geboorte bij de mairie van de geboorteplaats", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "geboorteakte", "fr": "acte de naissance", "cats": ["uittreksels"], "subcats": ["geboorte"], "note": "uittreksel: « extrait d’acte de naissance »; volledig: « copie intégrale »", "aliases": ["uittreksel geboorteakte"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "uittreksel (geboorte)", "fr": "extrait d’acte de naissance", "cats": ["uittreksels"], "subcats": ["geboorte"], "note": "varianten: met/zonder filiatie; meertalig mogelijk", "aliases": ["extrait geboorteakte"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "huwelijksaangifte", "fr": "dossier de mariage", "cats": ["uittreksels"], "subcats": ["huwelijk"], "note": "voorafgaand dossier + « publication des bans »", "aliases": ["huwelijksdossier"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "trouwakte", "fr": "acte de mariage", "cats": ["uittreksels"], "subcats": ["huwelijk"], "note": "uittreksel: « extrait d’acte de mariage »; volledig: « copie intégrale »", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "uittreksel (huwelijk)", "fr": "extrait d’acte de mariage", "cats": ["uittreksels"], "subcats": ["huwelijk"], "note": "alternatief: « copie intégrale »", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "overlijdensaangifte", "fr": "déclaration de décès", "cats": ["uittreksels"], "subcats": ["overlijden"], "note": "meestal via uitvaartondernemer; binnen 24 uur", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "overlijdensakte", "fr": "acte de décès", "cats": ["uittreksels"], "subcats": ["overlijden"], "note": "uittreksel: « extrait d’acte de décès »", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "familieboekje", "fr": "livret de famille", "cats": ["burgerlijke stand"], "subcats": [], "note": "overzicht gezinssituatie (geboorte/huwelijk/overlijden); duplicaat mogelijk", "aliases": ["gezinspaspoort"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "duplicaat familieboekje", "fr": "duplicata du livret de famille", "cats": ["burgerlijke stand"], "subcats": [], "note": "aan te vragen bij de mairie; bij verlies/scheiding", "aliases": ["duplicaat livret"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "domiciliebewijs", "fr": "justificatif de domicile", "cats": ["attesten & legalisaties"], "subcats": [], "note": "bv. energierekening <3 maanden, huurcontract, lokale heffingen", "aliases": ["woonadres-bewijs"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "bewijs van leven", "fr": "certificat de vie / attestation d’existence", "cats": ["attesten & legalisaties"], "subcats": [], "note": "pensioenfondsen vragen vaak een attestation op naam", "aliases": ["levensbewijs"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "verklaring op erewoord", "fr": "attestation sur l'honneur", "cats": ["attesten & legalisaties"], "subcats": [], "note": "eenvoudige verklaring zonder notaris; veel gebruikt", "aliases": ["erewoordverklaring"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "attest van inwoning", "fr": "attestation d’hébergement", "cats": ["attesten & legalisaties"], "subcats": [], "note": "gastheer verklaart huisvesting; vaak justificatifs toevoegen", "aliases": ["inwoningverklaring"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "samenwoningsbewijs", "fr": "attestation de vie commune / de concubinage", "cats": ["attesten & legalisaties"], "subcats": [], "note": "niet elke mairie levert dit; alternatief: attestation sur l'honneur", "aliases": ["concubinage", "samenlevingsverklaring"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "gelegaliseerde handtekening", "fr": "légalisation de signature", "cats": ["attesten & legalisaties"], "subcats": [], "note": "niet elke mairie doet dit; informeer naar procedure/afspraak", "aliases": ["legalisatie handtekening"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "beëdigde vertaling", "fr": "traduction assermentée", "cats": ["attesten & legalisaties"], "subcats": [], "note": "door traducteur-interprète (cour d'appel); vaak vereist bij buitenlandse akten", "aliases": ["gezworen vertaling"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "apostille", "fr": "apostille de La Haye", "cats": ["attesten & legalisaties"], "subcats": [], "note": "verkregen via cour d'appel; legaliseert buitenlandse akten", "aliases": ["apostille van den Haag"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "volmacht", "fr": "procuration", "cats": ["attesten & legalisaties"], "subcats": ["stemmen", "documenten afhalen"], "note": "bij verkiezingen: « procuration de vote »", "aliases": ["machtiging"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "geregistreerd partnerschap", "fr": "pacte civil de solidarité (PACS)", "cats": ["burgerlijke stand"], "subcats": [], "note": "registratie en wijzigingen vaak bij de mairie", "aliases": ["pacs"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "ontbinding pacs", "fr": "dissolution de PACS", "cats": ["burgerlijke stand"], "subcats": [], "note": "via mairie of notaris (afhankelijk van situatie)", "aliases": ["PACS beëindigen"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "huwelijkscontract", "fr": "contrat de mariage", "cats": ["burgerlijke stand"], "subcats": [], "note": "opgesteld bij notaris; kies stelsel vóór huwelijk", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "rectificatie akte", "fr": "rectification d’acte d’état civil", "cats": ["correcties & wijzigingen"], "subcats": [], "note": "fouten in akten kunnen via procedure worden hersteld", "aliases": ["correctie akte"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "voornaamswijziging", "fr": "changement de prénom", "cats": ["correcties & wijzigingen"], "subcats": [], "note": "aanvraag bij mairie; gemotiveerd verzoek nodig", "aliases": ["naamswijziging voornaam"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "naamswijziging (familienaam)", "fr": "changement de nom de famille", "cats": ["correcties & wijzigingen"], "subcats": [], "note": "kan via administratieve of gerechtelijke weg (afhankelijk van geval)", "aliases": ["familienaam wijzigen"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "identiteitskaart", "fr": "carte nationale d’identité (CNI)", "cats": ["identiteit & reisdocumenten"], "subcats": [], "note": "aanvraag/verlengen bij aangewezen mairies; RDV nodig", "aliases": ["cni"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "paspoort", "fr": "passeport biométrique", "cats": ["identiteit & reisdocumenten"], "subcats": [], "note": "aanvraag/verlengen bij aangewezen mairies; RDV nodig", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "verliesmelding document", "fr": "déclaration de perte (document d’identité)", "cats": ["identiteit & reisdocumenten"], "subcats": [], "note": "bij verlies: aangifte + nieuwe aanvraag; soms politie/gendarmerie", "aliases": ["verlies ID"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "diefstalmelding document", "fr": "déclaration de vol (document d’identité)", "cats": ["identiteit & reisdocumenten"], "subcats": [], "note": "bij diefstal altijd aangifte doen; dossier bij RDV meenemen", "aliases": ["diefstal ID"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "pasfoto-eisen", "fr": "photo d’identité (norme ICAO)", "cats": ["identiteit & reisdocumenten"], "subcats": [], "note": "let op formaat/achtergrond; vaak photomaton of fotograaf vereist", "aliases": ["pasfoto norm"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "inschrijving kiezerslijst", "fr": "inscription sur les listes électorales", "cats": ["verkiezingen"], "subcats": [], "note": "vereist justificatif de domicile en identiteit; deadlines per verkiezing", "aliases": ["kiezersregister"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "kiezerskaart", "fr": "carte électorale", "cats": ["verkiezingen"], "subcats": [], "note": "bewijs van inschrijving; vermeldt stembureau", "aliases": ["stempas"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "stembureau", "fr": "bureau de vote", "cats": ["verkiezingen"], "subcats": [], "note": "locatie en nummer op de carte électorale", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "begrafenis", "fr": "obsèques", "cats": ["begrafenis & crematie"], "subcats": [], "note": "algemene term; organisatie vaak met « pompes funèbres »", "aliases": ["uitvaart"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "begraafplaats", "fr": "cimetière", "cats": ["begrafenis & crematie"], "subcats": [], "note": "", "aliases": ["sépulture (graf)"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "grafconcessie", "fr": "concession funéraire", "cats": ["begrafenis & crematie"], "subcats": [], "note": "tijdelijke of eeuwigdurende rechten op een graf", "aliases": ["grafrechten"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "crematie", "fr": "incinération", "cats": ["begrafenis & crematie"], "subcats": [], "note": "", "aliases": ["crémation (gebruikelijk)"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "cerfa-formulier", "fr": "formulaire Cerfa n° …", "cats": ["formulieren (cerfa)"], "subcats": [], "note": "standaard overheidsformulier met nummer", "aliases": ["cerfa"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "aangetekend met ontvangst", "fr": "lettre recommandée avec accusé de réception (AR / RAR)", "cats": ["verzending"], "subcats": [], "note": "veel procedures vereisen RAR; bewaar het bewijs", "aliases": ["RAR", "AR"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "afspraak maken (loket)", "fr": "prise de rendez-vous (guichet)", "cats": ["afspraken & loket"], "subcats": [], "note": "online of telefonisch; soms verplicht", "aliases": ["rendez-vous", "afspraak"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "prefectuur", "fr": "préfecture / sous-préfecture", "cats": ["diversen"], "subcats": [], "note": "departementale diensten voor o.a. verblijfskaarten, voertuigen etc.", "aliases": ["sous-préfecture"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "verblijfsvergunning", "fr": "carte de séjour", "cats": ["diversen"], "subcats": [], "note": "aanvraag/beheer via prefectuur; mairie kan informeren maar beslist niet", "aliases": ["titre de séjour"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "militaire inschrijving", "fr": "recensement citoyen", "cats": ["militaire zaken"], "subcats": [], "note": "verplicht rond 16 jaar; attest nodig voor examens/rijbewijs", "aliases": ["burgerlijke dienstplicht-inschrijving"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "attest militaire inschrijving", "fr": "attestation de recensement", "cats": ["militaire zaken"], "subcats": [], "note": "verkrijgbaar na recensement; vaak gevraagd door onderwijsinstellingen", "aliases": ["bewijs recensement"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "jachtvergunning", "fr": "permis de chasser", "cats": ["diversen"], "subcats": [], "note": "aanvraag/validatie via federatie; mairie kan informatie verstrekken", "aliases": [], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "nationaliteitsverklaring", "fr": "déclaration de nationalité française", "cats": ["nationaliteit"], "subcats": [], "note": "procedure via tribunal/prefectuur; mairie kan informatiepunt zijn", "aliases": ["verkrijging nationaliteit"], "more_info_url": "", "updated": "2025-10-24" },
+
+    { "nl": "franceconnect", "fr": "FranceConnect (identité numérique)", "cats": ["digitale diensten"], "subcats": [], "note": "inlogkoppeling voor overheidsportalen; keuze uit verschillende providers", "aliases": ["digitaal inloggen"], "more_info_url": "", "updated": "2025-10-24" },
+    { "nl": "service-public portaal", "fr": "Service-Public.fr (portail de l’administration)", "cats": ["digitale diensten"], "subcats": [], "note": "centrale informatie en formulieren; URLs wijzigen vaak — gebruik ‘zoek verder’", "aliases": ["service public"], "more_info_url": "", "updated": "2025-10-24" }
   ]
 }
