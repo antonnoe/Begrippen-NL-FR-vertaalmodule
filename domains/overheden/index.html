@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <title>nl ↔ fr begrippenlijst — overheden & état civil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="margin:0; font-family:Trebuchet MS, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:#fff; line-height:1.45;">
+  <div style="max-width:1100px; margin:0 auto; padding:24px;">
+    <!-- header -->
+    <header style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+      <h1 style="margin:0; font-size:24px; font-weight:800;">nl ↔ fr begrippenlijst — overheden & état civil</h1>
+      <a href="../../" style="text-decoration:none; font-size:13px; font-weight:700; color:#800000;">← andere begrippenlijsten</a>
+    </header>
+
+    <!-- controls -->
+    <section style="margin-top:14px; display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;">
+      <input id="q" type="search" placeholder="zoek in deze lijst (nl of fr)…"
+             style="flex:1 1 360px; min-width:220px; font-size:16px; padding:10px 12px; border:1px solid #ccc; border-radius:10px; outline:none;">
+      <select id="cat" aria-label="categorie"
+              style="flex:0 0 220px; min-width:180px; font-size:14px; padding:10px 12px; border:1px solid #ccc; border-radius:10px; background:#fff;">
+        <option value="">alle categorieën</option>
+      </select>
+      <select id="subcat" aria-label="subcategorie"
+              style="flex:0 0 220px; min-width:180px; font-size:14px; padding:10px 12px; border:1px solid #ccc; border-radius:10px; background:#fff;">
+        <option value="">alle subcategorieën</option>
+      </select>
+      <div style="display:flex; gap:8px;">
+        <button id="dir-nlfr" type="button" aria-pressed="true"
+                style="cursor:pointer; border:1px solid #800000; background:#800000; color:#fff; padding:10px 12px; border-radius:10px; font-size:14px; font-weight:700;">
+          nl → fr
+        </button>
+        <button id="dir-frnl" type="button" aria-pressed="false"
+                style="cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:10px 12px; border-radius:10px; font-size:14px; font-weight:700;">
+          fr → nl
+        </button>
+      </div>
+      <button id="clear" type="button"
+              style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:10px 12px; border-radius:10px; font-size:14px;">
+        wis
+      </button>
+    </section>
+
+    <!-- meta -->
+    <div id="meta" style="margin-top:10px; font-size:13px; color:#444;">—</div>
+
+    <!-- list -->
+    <div id="list" role="list" style="margin-top:12px; display:grid; grid-template-columns:1fr; gap:10px;"></div>
+
+    <!-- hint (verdwijnt zodra data is geladen) -->
+    <div id="hint" style="margin-top:10px; font-size:13px; color:#b02a37; padding:8px 10px; border:1px solid #f1c0c4; border-radius:8px; background:#fff5f6;">
+      als je dit blijft zien: controleer of <code>/data/overheden.json</code> bestaat op de live site.
+    </div>
+  </div>
+
+  <script>
+    // ===== helpers
+    const norm = s => (s||"\"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"\"").trim();
+    const esc = s => (s||"\"").toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    function copyText(text, btn){
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(()=>flash(btn));
+      } else {
+        const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand("copy"); flash(btn);} finally{ document.body.removeChild(ta); }
+      }
+    }
+    function flash(btn){ if(!btn) return; const old=btn.innerText; const obg=btn.style.background; const obc=btn.style.borderColor; const oc=btn.style.color;
+      btn.innerText="gekopieerd"; btn.style.background="#198754"; btn.style.borderColor="#198754"; btn.style.color="#fff";
+      setTimeout(()=>{ btn.innerText=old; btn.style.background=obg; btn.style.borderColor=obc; btn.style.color=oc; },900);
+    }
+    function speakFR(text){
+      if(!("speechSynthesis" in window)) return;
+      const u=new SpeechSynthesisUtterance(text); const vs=speechSynthesis.getVoices(); const fr=vs.find(v=>/fr/i.test(v.lang));
+      if(fr) u.voice=fr; u.lang="fr-FR"; speechSynthesis.speak(u);
+    }
+    function siteSearchUrl(domain, termNL, termFR){
+      const q = `"${termNL}" OR "${termFR}"`;
+      return `https://www.google.com/search?q=site:${encodeURIComponent(domain)}+${encodeURIComponent(q)}`;
+    }
+
+    // ===== state & elements
+    const state = { dir:"NLFR", q:"", cat:"", subcat:"", terms:[], meta:{ domain_title:"overheden & état civil", default_more_info_url:"" } };
+    const elQ = document.getElementById('q');
+    const elCat = document.getElementById('cat');
+    const elSub = document.getElementById('subcat');
+    const elList = document.getElementById('list');
+    const elMeta = document.getElementById('meta');
+    const elHint = document.getElementById('hint');
+    const btnNLFR = document.getElementById('dir-nlfr');
+    const btnFRNL = document.getElementById('dir-frnl');
+    const btnClear = document.getElementById('clear');
+
+    // ===== load data
+    (function load(){
+      fetch("../../data/overheden.json", {cache:"no-store"})
+        .then(r=>{ if(!r.ok) throw new Error("http "+r.status); return r.json(); })
+        .then(json=>{
+          state.meta.domain_title = json.domain_title || state.meta.domain_title;
+          state.meta.default_more_info_url = json.default_more_info_url || "";
+          state.meta.search_sites = Array.isArray(json.search_sites)? json.search_sites : ["infofrankrijk.com","nederlanders.fr"];
+          state.terms = Array.isArray(json.terms) ? json.terms : [];
+          elHint.style.display="none";
+          fillFilters(); render();
+        })
+        .catch(err=>{
+          elMeta.textContent = "kon data niet laden: "+err.message+" (verwacht: ../../data/overheden.json)";
+        });
+    })();
+
+    // ===== filters
+    function fillFilters(){
+      const cats = new Set();
+      state.terms.forEach(t => (t.cats||[]).forEach(c => cats.add(c)));
+      elCat.innerHTML = '<option value="">alle categorieën</option>' + [...cats].sort((a,b)=>a.localeCompare(b)).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+      elSub.innerHTML = '<option value="">alle subcategorieën</option>';
+    }
+    function fillSubcats(){
+      const set = new Set();
+      state.terms.forEach(t=>{
+        if(state.cat && !(t.cats||[]).includes(state.cat)) return;
+        (t.subcats||[]).forEach(s => set.add(s));
+      });
+      elSub.innerHTML = '<option value="">alle subcategorieën</option>' + [...set].sort((a,b)=>a.localeCompare(b)).map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    }
+
+    // ===== render
+    function render(){
+      const qn = norm(state.q);
+      let rows = state.terms.slice();
+
+      if(state.cat) rows = rows.filter(t => (t.cats||[]).includes(state.cat));
+      if(state.subcat) rows = rows.filter(t => (t.subcats||[]).includes(state.subcat));
+      if(qn){
+        rows = rows.filter(t=>{
+          const hay = [
+            t.nl, t.fr, (t.aliases||[]).join(" "),
+            (t.cats||[]).join(" "), (t.subcats||[]).join(" "),
+            t.note
+          ].map(norm).join(" ");
+          return hay.indexOf(qn)!==-1;
+        });
+      }
+
+      rows.sort((a,b)=>{
+        const A = state.dir==="NLFR" ? norm(a.nl) : norm(a.fr);
+        const B = state.dir==="NLFR" ? norm(b.nl) : norm(b.fr);
+        return A.localeCompare(B);
+      });
+
+      elMeta.textContent = `${rows.length} resultaten · ${state.meta.domain_title} · ${state.dir==="NLFR"?"nl→fr":"fr→nl"}${state.cat?` · ${state.cat}`:""}${state.subcat?` · ${state.subcat}`:""}`;
+
+      elList.innerHTML = "";
+      rows.forEach(t=>{
+        const left = state.dir==="NLFR" ? t.nl : t.fr;
+        const right= state.dir==="NLFR" ? t.fr : t.nl;
+
+        const card=document.createElement("div");
+        card.setAttribute("role","listitem");
+        card.style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;";
+
+        const row1=document.createElement("div");
+        row1.style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between;";
+
+        const col=document.createElement("div"); col.style="min-width:0; flex:1;";
+        const title=document.createElement("div");
+        title.style="font-size:16px; font-weight:800; margin:0 0 6px 0;";
+        title.innerHTML = `${esc(left)} <span style="font-weight:400; color:#aaa;">→</span> <span style="color:#800000;">${esc(right)}</span>`;
+        col.appendChild(title);
+
+        const meta=document.createElement("div");
+        meta.style="font-size:12px; color:#555; display:flex; gap:6px; align-items:center; flex-wrap:wrap;";
+        const cats=(t.cats||[]).map(c=>`<span style="padding:0 6px; border:1px solid #ddd; border-radius:999px;">${esc(c)}</span>`).join(" ");
+        const sub=(t.subcats||[]).map(s=>`<span style="padding:0 6px; border:1px dashed #e0e0e0; border-radius:999px;">${esc(s)}</span>`).join(" ");
+        meta.innerHTML=`${cats} ${sub}`;
+        col.appendChild(meta);
+
+        const actions=document.createElement("div");
+        actions.style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;";
+        const bCopy=document.createElement("button"); bCopy.type="button"; bCopy.textContent="kopieer";
+        bCopy.style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:8px 10px; border-radius:10px; font-size:13px;";
+        bCopy.onclick=()=>copyText(state.dir==="NLFR"?t.fr:t.nl,bCopy);
+
+        let bSpeak=null;
+        if(state.dir==="NLFR"){
+          bSpeak=document.createElement("button"); bSpeak.type="button"; bSpeak.textContent="uitspraak";
+          bSpeak.style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:8px 10px; border-radius:10px; font-size:13px;";
+          bSpeak.onclick=()=>speakFR(t.fr);
+          actions.appendChild(bSpeak);
+        }
+
+        const moreUrl = (t.more_info_url && t.more_info_url.trim()) ? t.more_info_url : (state.meta.default_more_info_url||"");
+        if(moreUrl){
+          const bMore=document.createElement("a"); bMore.textContent="meer informatie";
+          bMore.href=moreUrl; bMore.target="_blank"; bMore.rel="noopener";
+          bMore.style="text-decoration:none; cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:8px 10px; border-radius:10px; font-size:13px; font-weight:700;";
+          actions.appendChild(bMore);
+        }
+
+        const menu=document.createElement("div"); menu.style="position:relative; display:inline-block;";
+        const bSearch=document.createElement("button"); bSearch.type="button"; bSearch.textContent="zoek verder ▾";
+        bSearch.style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:8px 10px; border-radius:10px; font-size:13px;";
+        const dd=document.createElement("div");
+        dd.style="display:none; position:absolute; right:0; margin-top:6px; min-width:220px; background:#fff; border:1px solid #e6e6e6; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,.07); padding:6px;";
+        (state.meta.search_sites||["infofrankrijk.com","nederlanders.fr"]).forEach(domain=>{
+          const a=document.createElement("a"); a.href=siteSearchUrl(domain, t.nl, t.fr); a.target="_blank"; a.rel="noopener";
+          a.textContent = "zoek op "+domain; a.style="display:block; text-decoration:none; font-size:13px; color:#0b5ed7; padding:6px 8px; border-radius:8px;";
+          a.onmouseenter=()=>a.style.background="#f6f8fa"; a.onmouseleave=()=>a.style.background="transparent";
+          dd.appendChild(a);
+        });
+        bSearch.onclick=()=>{ dd.style.display = dd.style.display==="none" ? "block" : "none"; };
+        document.addEventListener("click",(e)=>{ if(!menu.contains(e.target)) dd.style.display="none"; });
+        menu.appendChild(bSearch); menu.appendChild(dd);
+
+        actions.appendChild(bCopy);
+        actions.appendChild(menu);
+
+        row1.appendChild(col); row1.appendChild(actions);
+        card.appendChild(row1);
+
+        if(t.note){
+          const details=document.createElement("div");
+          details.style="margin-top:8px; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:10px;";
+          const toggle=document.createElement("button");
+          toggle.type="button"; toggle.textContent="[?] toelichting tonen";
+          toggle.style="cursor:pointer; border:1px solid #ddd; background:#fff; color:#333; padding:6px 8px; border-radius:10px; font-size:12px; margin-bottom:6px;";
+          const p=document.createElement("div"); p.textContent=t.note; p.style="font-size:13px; color:#333; display:none;";
+          toggle.onclick=()=>{ const vis = p.style.display!="none"; p.style.display = vis ? "none" : "block"; toggle.textContent = vis ? "[?] toelichting tonen" : "[?] toelichting verbergen"; };
+          details.appendChild(toggle); details.appendChild(p);
+          card.appendChild(details);
+        }
+
+        elList.appendChild(card);
+      });
+    }
+
+    // ===== events
+    elQ.addEventListener("input", e=>{ state.q=e.target.value; render(); });
+    elCat.addEventListener("change", e=>{ state.cat=e.target.value; state.subcat=""; fillSubcats(); render(); });
+    elSub.addEventListener("change", e=>{ state.subcat=e.target.value; render(); });
+    btnNLFR.addEventListener("click", ()=>{ state.dir="NLFR"; btnNLFR.style.background="#800000"; btnNLFR.style.color="#fff"; btnFRNL.style.background="#fff"; btnFRNL.style.color="#800000"; render(); });
+    btnFRNL.addEventListener("click", ()=>{ state.dir="FRNL"; btnFRNL.style.background="#800000"; btnFRNL.style.color="#fff"; btnNLFR.style.background="#fff"; btnNLFR.style.color="#800000"; render(); });
+    btnClear.addEventListener("click", ()=>{ elQ.value=""; state.q=""; elCat.value=""; state.cat=""; elSub.innerHTML='<option value="">alle subcategorieën</option>'; state.subcat=""; render(); });
+
+    // ===== responsiveness (hier 1 kolom; lijst-items zijn compact)
+    (function(){
+      const onResize=()=>{
+        const w=window.innerWidth||document.documentElement.clientWidth;
+        document.getElementById('list').style.gridTemplateColumns = "1fr";
+      };
+      onResize(); window.addEventListener('resize', onResize);
+    })();
+  </script>
+</body>
