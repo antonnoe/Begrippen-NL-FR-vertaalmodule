@@ -1,0 +1,129 @@
+{
+  "domain_title": "klussen en verbouwen",
+  "default_more_info_url": "https://infofrankrijk.com/woordenlijst-bouwkundige-termen/",
+  "search_sites": ["infofrankrijk.com", "nederlanders.fr"],
+  "terms": [
+    {
+      "nl": "bouwvergunning",
+      "fr": "permis de construire",
+      "cats": ["vergunningen & meldingen"],
+      "subcats": [],
+      "note": "nodig bij grotere werken (uitbreiding, nieuwbouw); kleine werken vaak via DP",
+      "aliases": ["permis", "PC"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "meldingsplicht (kleine werken)",
+      "fr": "déclaration préalable (DP)",
+      "cats": ["vergunningen & meldingen"],
+      "subcats": ["kleine werken"],
+      "note": "o.a. dakkapel, gevelwijziging; check drempels in de gemeente",
+      "aliases": ["DP"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "gereedmeldingsverklaring",
+      "fr": "DAACT (déclaration attestant l’achèvement et la conformité des travaux)",
+      "cats": ["vergunningen & meldingen"],
+      "subcats": [],
+      "note": "na afronding van de werken; start hertoetsingsperiode",
+      "aliases": ["DAACT"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "vloeroppervlak (huidige norm)",
+      "fr": "surface de plancher (SDP)",
+      "cats": ["metingen & oppervlaktes"],
+      "subcats": [],
+      "note": "vervanger van SHON/SHOB; wordt gebruikt bij vergunningen/heffingen",
+      "aliases": ["SDP", "surface taxable (context)"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "bebouwd oppervlak",
+      "fr": "emprise au sol",
+      "cats": ["metingen & oppervlaktes"],
+      "subcats": [],
+      "note": "projectie van de bebouwing op het maaiveld",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "energieprestatiecertificaat",
+      "fr": "diagnostic de performance énergétique (DPE)",
+      "cats": ["diagnostics"],
+      "subcats": [],
+      "note": "verplicht bij verkoop/huur; label A–G",
+      "aliases": ["DPE"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "technische verkoopdossiers",
+      "fr": "dossier de diagnostics techniques (DDT)",
+      "cats": ["diagnostics"],
+      "subcats": [],
+      "note": "pakket: o.a. DPE, gas/elektra, lood, asbest, termieten, ERP",
+      "aliases": ["DDT"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "dienst individueel riool",
+      "fr": "SPANC (Service Public d’Assainissement Non Collectif)",
+      "cats": ["riolering & water"],
+      "subcats": [],
+      "note": "controle op septic/ANC; verplicht bij verkoop en vaak bij verbouw",
+      "aliases": ["ANC", "assainissement non collectif"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "risico-informatieformulier",
+      "fr": "état des risques (ERP)",
+      "cats": ["diagnostics"],
+      "subcats": [],
+      "note": "overstroming, seismisch, industriële risico’s; bij koop/huur",
+      "aliases": ["ERP", "ERRIAL (zoekportaal)"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+
+    // Gereedschap (subcats)
+    {
+      "nl": "accuboormachine",
+      "fr": "perceuse-visseuse sans fil",
+      "cats": ["gereedschap"],
+      "subcats": ["elektrisch gereedschap"],
+      "note": "",
+      "aliases": ["schroefboormachine"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "decoupeerzaag",
+      "fr": "scie sauteuse",
+      "cats": ["gereedschap"],
+      "subcats": ["elektrisch gereedschap"],
+      "note": "",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "waterpas",
+      "fr": "niveau à bulle",
+      "cats": ["gereedschap"],
+      "subcats": ["meetgereedschap"],
+      "note": "",
+      "aliases": ["libelle"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    }
+  ]
+}
