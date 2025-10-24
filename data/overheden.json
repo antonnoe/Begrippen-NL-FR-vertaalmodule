@@ -1,0 +1,157 @@
+{
+  "domain_title": "overheden & état civil",
+  "default_more_info_url": "https://infofrankrijk.com/test-lexicon-test/",
+  "search_sites": ["infofrankrijk.com", "nederlanders.fr"],
+  "terms": [
+    {
+      "nl": "gemeentehuis",
+      "fr": "mairie",
+      "cats": ["burgerlijke stand"],
+      "subcats": [],
+      "note": "lokaal gemeentebestuur; kleine letter in lopende tekst",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "burgemeester",
+      "fr": "maire",
+      "cats": ["raad & bestuur"],
+      "subcats": [],
+      "note": "vrouwelijk: la maire (steeds gebruikelijker) of madame la maire",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "wethouder",
+      "fr": "adjoint(e) au maire",
+      "cats": ["raad & bestuur"],
+      "subcats": [],
+      "note": "portefeuillehouder; meerdere adjoints mogelijk",
+      "aliases": ["schepen (Vlaams)"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "geboorteakte",
+      "fr": "acte de naissance",
+      "cats": ["uittreksels"],
+      "subcats": [],
+      "note": "uittreksel: extrait d’acte de naissance",
+      "aliases": ["uittreksel geboorteakte"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "trouwakte",
+      "fr": "acte de mariage",
+      "cats": ["uittreksels"],
+      "subcats": [],
+      "note": "publicatie vooraf: publication des bans",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "overlijdensakte",
+      "fr": "acte de décès",
+      "cats": ["uittreksels"],
+      "subcats": [],
+      "note": "",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "bewijs van leven",
+      "fr": "certificat de vie / attestation d’existence",
+      "cats": ["attesten & legalisaties"],
+      "subcats": [],
+      "note": "pensioenfondsen vragen vaak om een attestation op naam",
+      "aliases": ["levensbewijs"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "gelegaliseerde handtekening",
+      "fr": "légalisation de signature",
+      "cats": ["attesten & legalisaties"],
+      "subcats": [],
+      "note": "niet elke mairie doet dit; vraag naar werkwijze/afspraak",
+      "aliases": ["legalisatie handtekening"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "verklaring op erewoord",
+      "fr": "attestation sur l'honneur",
+      "cats": ["attesten & legalisaties"],
+      "subcats": [],
+      "note": "veel gebruikt bij eenvoudige bewijsvoering zonder notaris",
+      "aliases": ["erewoordverklaring"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "volmacht",
+      "fr": "procuration",
+      "cats": ["attesten & legalisaties"],
+      "subcats": ["stemmen", "documenten afhalen"],
+      "note": "ook bij verkiezingen: procuration de vote",
+      "aliases": ["machtiging"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "huwelijkscontract",
+      "fr": "contrat de mariage",
+      "cats": ["burgerlijke stand"],
+      "subcats": [],
+      "note": "opgesteld bij notaris; kies stelsel vóór huwelijk",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "geregistreerd partnerschap",
+      "fr": "pacte civil de solidarité (PACS)",
+      "cats": ["burgerlijke stand"],
+      "subcats": [],
+      "note": "geen NL-samenlevingscontract; rechten/verplichtingen verschillen",
+      "aliases": ["pacs"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "samenwoningsbewijs",
+      "fr": "attestation de vie commune / de concubinage",
+      "cats": ["attesten & legalisaties"],
+      "subcats": [],
+      "note": "niet alle mairies leveren dit; alternatief: attestation sur l'honneur",
+      "aliases": ["concubinage", "samenlevingsverklaring"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "cerfa-formulier",
+      "fr": "formulaire Cerfa n° …",
+      "cats": ["formulieren (cerfa)"],
+      "subcats": [],
+      "note": "standaard overheidsformulier met nummer; download via service-public.fr",
+      "aliases": ["cerfa"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "aangetekend met ontvangst",
+      "fr": "lettre recommandée avec accusé de réception (AR / RAR)",
+      "cats": ["verzending"],
+      "subcats": [],
+      "note": "veel procedures vereisen RAR; bewaar het bewijs",
+      "aliases": ["RAR", "AR"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    }
+  ]
+}

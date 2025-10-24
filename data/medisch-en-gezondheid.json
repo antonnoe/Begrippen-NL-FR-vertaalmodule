@@ -1,0 +1,113 @@
+{
+  "domain_title": "medisch en gezondheid",
+  "default_more_info_url": "https://infofrankrijk.com/medische-woordenlijst-frankrijk/",
+  "search_sites": ["infofrankrijk.com", "nederlanders.fr"],
+  "terms": [
+    {
+      "nl": "zorgpas",
+      "fr": "carte Vitale",
+      "cats": ["verzekeringen & rechten"],
+      "subcats": [],
+      "note": "bewijs van aansluiting bij het zorgstelsel; neem mee naar consult",
+      "aliases": ["verzekeringskaart"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "universele basisdekking zorg",
+      "fr": "PUMA (protection universelle maladie)",
+      "cats": ["verzekeringen & rechten"],
+      "subcats": [],
+      "note": "recht op dekking bij stabiel verblijf/werk in Frankrijk",
+      "aliases": ["basisdekking"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "aanvullende zorgverzekering lage inkomens",
+      "fr": "CSS (complémentaire santé solidaire)",
+      "cats": ["verzekeringen & rechten"],
+      "subcats": [],
+      "note": "opvolger CMU-C/ACS; inkomensafhankelijk",
+      "aliases": ["mutuelle sociale", "CSS"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "huisarts",
+      "fr": "médecin traitant",
+      "cats": ["huisarts"],
+      "subcats": [],
+      "note": "inschrijven bij een vaste huisarts optimaliseert vergoedingen",
+      "aliases": ["behandelend arts"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+
+    // Medische specialisten
+    {
+      "nl": "kno-arts",
+      "fr": "ORL (oto-rhino-laryngologiste)",
+      "cats": ["medische specialisten"],
+      "subcats": [],
+      "note": "",
+      "aliases": ["oor-neus-keelarts"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "cardioloog",
+      "fr": "cardiologue",
+      "cats": ["medische specialisten"],
+      "subcats": [],
+      "note": "",
+      "aliases": [],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+
+    // Paramedici
+    {
+      "nl": "fysiotherapeut",
+      "fr": "masseur-kinésithérapeute",
+      "cats": ["paramedici"],
+      "subcats": ["revalidatie"],
+      "note": "afspraak vaak via verwijzing huisarts",
+      "aliases": ["kiné"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "logopedist",
+      "fr": "orthophoniste",
+      "cats": ["paramedici"],
+      "subcats": ["spraak/taal"],
+      "note": "",
+      "aliases": ["logopedie"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+
+    // Documenten & vergoedingen
+    {
+      "nl": "zorgrechten-verklaring",
+      "fr": "attestation de droits",
+      "cats": ["documenten & formulieren"],
+      "subcats": [],
+      "note": "bewijs van dekking (te downloaden via Ameli)",
+      "aliases": ["attestation"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    },
+    {
+      "nl": "europees zorgpasje",
+      "fr": "carte européenne d’assurance maladie (CEAM)",
+      "cats": ["verzekeringen & rechten"],
+      "subcats": [],
+      "note": "voor tijdelijk verblijf binnen EU/EER",
+      "aliases": ["EHIC"],
+      "more_info_url": "",
+      "updated": "2025-10-24"
+    }
+  ]
+}
