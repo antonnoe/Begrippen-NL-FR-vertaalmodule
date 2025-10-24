@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <title>NL ↔ FR Begrippenlijst — mairie, dossiers, toeslagen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Single-file: alle CSS inline via style="" en geen externe scripts. -->
+</head>
+<body style="margin:0; padding:24px; font-family: Trebuchet MS, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:#fff; line-height:1.45;">
+  <div style="max-width:1024px; margin:0 auto;">
+    <!-- Header -->
+    <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+      <h1 style="margin:0; font-size:26px; font-weight:800; letter-spacing:.2px;">
+        NL ↔ FR Begrippenlijst
+        <span style="font-size:13px; font-weight:700; color:#800000; padding:3px 8px; border:1px solid #800000; border-radius:999px; margin-left:6px;">
+          mairie · dossiers · toeslagen
+        </span>
+      </h1>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="https://www.nederlanders.fr" target="_blank" rel="noopener" 
+           style="text-decoration:none; font-size:13px; font-weight:700; color:#fff; background:#800000; padding:8px 12px; border-radius:10px;">
+           Naar Nederlanders.fr
+        </a>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start;">
+      <input id="q" type="search" placeholder="Zoek op NL of FR… (bv. 'bouwvergunning' of 'permis')"
+             style="flex:1 1 360px; min-width:260px; font-size:16px; padding:10px 12px; border:1px solid #ccc; border-radius:10px; outline:none;">
+      <!-- PREFILLED fallback: toont hoofdcategorieën, óók zonder JS -->
+      <select id="cat" aria-label="Filter op categorie"
+              style="flex:0 0 260px; min-width:220px; font-size:14px; padding:10px 12px; border:1px solid #ccc; border-radius:10px; background:#fff;">
+        <option value="">Alle categorieën</option>
+        <option>Mairie & État civil</option>
+        <option>Urbanisme</option>
+        <option>Notariaat & Vastgoed</option>
+        <option>Verblijfsrecht & Admin</option>
+        <option>Gezondheid & SZ</option>
+        <option>Belastingen & Bercy</option>
+        <option>Toeslagen & Sociaal</option>
+        <option>Onderwijs</option>
+        <option>Voertuigen</option>
+        <option>Wonen & Nuts</option>
+        <option>Energie</option>
+      </select>
+      <div style="display:flex; gap:8px; align-items:stretch;">
+        <button id="dir-nlfr" type="button" aria-pressed="true"
+                style="cursor:pointer; border:1px solid #800000; background:#800000; color:#fff; padding:10px 12px; border-radius:10px; font-size:14px; font-weight:700;">
+          NL → FR
+        </button>
+        <button id="dir-frnl" type="button" aria-pressed="false"
+                style="cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:10px 12px; border-radius:10px; font-size:14px; font-weight:700;">
+          FR → NL
+        </button>
+      </div>
+      <button id="clear" type="button"
+              style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:10px 12px; border-radius:10px; font-size:14px;">
+        Wis
+      </button>
+    </div>
+
+    <!-- JS-status hint (zichtbaar als scripts geblokkeerd zijn) -->
+    <div id="js-hint" style="margin-top:8px; font-size:13px; color:#b02a37; padding:8px 10px; border:1px solid #f1c0c4; border-radius:8px; background:#fff5f6;">
+      ⚠️ Interactieve lijst niet zichtbaar? Plak dit bestand in een <strong>HTML/Code</strong>-blok (niet “Visueel”). 
+      WP/Ning kan <em>&lt;script&gt;</em> blokkeren; zie eventueel een iframe-embed.
+    </div>
+
+    <!-- Free text → Google Translate -->
+    <div style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <textarea id="freeText" rows="2" placeholder="Vrije tekst → open in Google Translate (NL ⇄ FR)"
+                style="flex:1 1 520px; min-width:260px; font-size:14px; padding:10px 12px; border:1px solid #ccc; border-radius:10px;"></textarea>
+      <div style="display:flex; gap:8px;">
+        <button id="gt-nlfr" type="button"
+                style="cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:8px 12px; border-radius:10px; font-size:13px; font-weight:700;">
+          Open NL→FR
+        </button>
+        <button id="gt-frnl" type="button"
+                style="cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:8px 12px; border-radius:10px; font-size:13px; font-weight:700;">
+          Open FR→NL
+        </button>
+      </div>
+    </div>
+
+    <!-- Meta + List -->
+    <div id="meta" style="margin-top:12px; font-size:13px; color:#444;">—</div>
+    <div id="list" role="list" style="margin-top:12px; display:grid; grid-template-columns:1fr; gap:10px;"></div>
+
+    <!-- Info -->
+    <div style="margin-top:22px; font-size:12.5px; color:#555;">
+      <div style="padding:12px; border:1px dashed #ccc; border-radius:10px;">
+        <div style="font-weight:800; margin-bottom:6px;">Tip & Toelichting</div>
+        <p style="margin:6px 0;">
+          <strong>Status-badge:</strong> 
+          <span style="padding:2px 6px; border-radius:999px; border:1px solid #198754; color:#198754; font-weight:700; font-size:12px;">Actueel</span> = gangbaar/modern. 
+          <span style="padding:2px 6px; border-radius:999px; border:1px solid #b02a37; color:#b02a37; font-weight:700; font-size:12px;">Verouderd</span> = liever vermijden; zie de term-uitleg.
+        </p>
+        <p style="margin:6px 0;">
+          <strong>“Bercy”</strong> is de bijnaam voor het Franse ministerie van Economie en Financiën. In deze lijst gebruiken we de officiële benamingen
+          (bv. <em>DGFiP</em> voor de belastingdienst) en geven we waar relevant een linkje (🔗) naar een betrouwbare bron.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data (uitgebreid en uitbreidbaar) -->
+  <script>
+  // Elk item: { nl, fr, status:"actueel|verouderd", cats:[…], note?, source?:{label,url} }
+  const TERMS = [
+    // — Mairie & État civil
+    { nl:"ambtenaar", fr:"le fonctionnaire", status:"actueel", cats:["Mairie & État civil"], note:"Algemene term voor overheidspersoneel." },
+    { nl:"gemeentehuis", fr:"la mairie", status:"actueel", cats:["Mairie & État civil"], note:"Kleine letter in lopende tekst." },
+    { nl:"gemeenteraad", fr:"le conseil municipal", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"burgemeester", fr:"le maire", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"wethouder", fr:"l’adjoint(e) au maire", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"afspraak op het gemeentehuis", fr:"le rendez-vous à la mairie", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"bewijs van leven", fr:"le certificat de vie / l’attestation d’existence", status:"actueel", cats:["Mairie & État civil"], note:"Pensioenfondsen vragen vaak attestation op naam." },
+    { nl:"geboorteaangifte", fr:"la déclaration de naissance", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"geboorteakte", fr:"l’acte de naissance", status:"actueel", cats:["Mairie & État civil"], source:{label:"Service-Public — Acte de naissance", url:"https://www.service-public.fr/particuliers/vosdroits/F1427"} },
+    { nl:"uittreksel geboorteakte", fr:"l’extrait d’acte de naissance", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"trouwakte", fr:"l’acte de mariage", status:"actueel", cats:["Mairie & État civil"], source:{label:"Service-Public — Acte de mariage", url:"https://www.service-public.fr/particuliers/vosdroits/F1432"} },
+    { nl:"overlijdensakte", fr:"l’acte de décès", status:"actueel", cats:["Mairie & État civil"], source:{label:"Service-Public — Acte de décès", url:"https://www.service-public.fr/particuliers/vosdroits/F1444"} },
+    { nl:"publicatie van huwelijksaankondiging", fr:"la publication des bans", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"familieboekje", fr:"le livret de famille", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"gelegaliseerde handtekening", fr:"la légalisation de signature", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"apostille", fr:"l’apostille", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"verklaring op erewoord", fr:"l’attestation sur l’honneur", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"volmacht", fr:"la procuration", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"huwelijkscontract", fr:"le contrat de mariage", status:"actueel", cats:["Mairie & État civil","Notariaat & Vastgoed"], note:"Opgesteld bij notaris." },
+    { nl:"geregistreerd partnerschap", fr:"pacte civil de solidarité (PACS)", status:"actueel", cats:["Mairie & État civil","Toeslagen & Sociaal"], source:{label:"Service-Public — PACS", url:"https://www.service-public.fr/particuliers/vosdroits/N144"} },
+    { nl:"samenwoningsbewijs", fr:"attestation de vie commune / de concubinage", status:"actueel", cats:["Mairie & État civil"], note:"Niet alle mairies leveren dit nog af." },
+    { nl:"scheiden (werkwoord)", fr:"divorcer", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"scheiding van tafel en bed", fr:"la séparation de corps", status:"actueel", cats:["Mairie & État civil"] },
+    { nl:"uittreksel strafregister (VOG)", fr:"le casier judiciaire (bulletin n°3)", status:"actueel", cats:["Mairie & État civil"] },
+
+    // — Urbanisme
+    { nl:"bestemmingsplan (oud)", fr:"plan d’occupation des sols (POS)", status:"verouderd", cats:["Urbanisme"], note:"Vervangen door PLU." },
+    { nl:"bestemmingsplan", fr:"plan local d’urbanisme (PLU)", status:"actueel", cats:["Urbanisme"], source:{label:"Service-Public — PLU", url:"https://www.service-public.fr/particuliers/vosdroits/F2361"} },
+    { nl:"stedenbouwkundig attest", fr:"certificat d’urbanisme (CU a / CU b)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"bouwvergunning", fr:"permis de construire", status:"actueel", cats:["Urbanisme"], source:{label:"Service-Public — Permis de construire", url:"https://www.service-public.fr/particuliers/vosdroits/F1986"} },
+    { nl:"vergunning slopen", fr:"permis de démolir", status:"actueel", cats:["Urbanisme"] },
+    { nl:"vergunning herontwikkelen", fr:"permis d’aménager", status:"actueel", cats:["Urbanisme"] },
+    { nl:"wijzigingsvergunning", fr:"permis modificatif", status:"actueel", cats:["Urbanisme"] },
+    { nl:"meldingsplicht (kleine werken)", fr:"déclaration préalable (DP)", status:"actueel", cats:["Urbanisme"], source:{label:"Service-Public — DP", url:"https://www.service-public.fr/particuliers/vosdroits/F17578"} },
+    { nl:"startmelding bouw", fr:"déclaration d’ouverture de chantier (DOC)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"gereedmelding conformiteit", fr:"DAACT (déclaration attestant l’achèvement et la conformité des travaux)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"Monumentenzorg-architect", fr:"Architecte des Bâtiments de France (ABF)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"beschermd gebied", fr:"secteur sauvegardé / site classé", status:"actueel", cats:["Urbanisme"] },
+    { nl:"bruto oppervlak (SHOB)", fr:"surface hors œuvre brute (SHOB)", status:"verouderd", cats:["Urbanisme"], note:"Afschaffing; gebruik SDP/surface taxable." },
+    { nl:"netto oppervlak (SHON)", fr:"surface hors œuvre nette (SHON)", status:"verouderd", cats:["Urbanisme"], note:"Afschaffing; gebruik SDP." },
+    { nl:"vloeroppervlak (actueel)", fr:"surface de plancher (SDP)", status:"actueel", cats:["Urbanisme"], note:"Huidige referentie." },
+    { nl:"bebouwd oppervlak", fr:"emprise au sol", status:"actueel", cats:["Urbanisme"] },
+    { nl:"belastbare oppervlakte", fr:"surface taxable", status:"actueel", cats:["Urbanisme"] },
+    { nl:"energieprestatie", fr:"diagnostic de performance énergétique (DPE)", status:"actueel", cats:["Urbanisme","Energie"] },
+    { nl:"energetische audit", fr:"audit énergétique", status:"actueel", cats:["Urbanisme","Energie"] },
+    { nl:"riolering individueel", fr:"assainissement non collectif (ANC)", status:"actueel", cats:["Urbanisme","Wonen & Nuts"] },
+    { nl:"controle ANC", fr:"SPANC (Service Public d’Assainissement Non Collectif)", status:"actueel", cats:["Urbanisme","Wonen & Nuts"] },
+    { nl:"stedenbouwkundige heffing", fr:"taxe d’aménagement", status:"actueel", cats:["Urbanisme"] },
+    { nl:"risicostaat", fr:"état des risques (ERP)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"technische dossiers (verkoop)", fr:"dossier de diagnostics techniques (DDT)", status:"actueel", cats:["Urbanisme"] },
+    { nl:"asbest", fr:"amiante", status:"actueel", cats:["Urbanisme"] },
+    { nl:"termieten", fr:"termites", status:"actueel", cats:["Urbanisme"] },
+    { nl:"gas/elektra-keuring", fr:"diagnostic gaz / électricité", status:"actueel", cats:["Urbanisme"] },
+
+    // — Notariaat & Vastgoed
+    { nl:"notaris", fr:"notaire", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"voorlopige koopovereenkomst", fr:"compromis de vente", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"eenzijdige koopoptie", fr:"promesse unilatérale de vente", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"authentieke akte", fr:"acte authentique de vente", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"bedenktermijn", fr:"délai de rétractation (loi SRU)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"ontbindende voorwaarde", fr:"clause suspensive", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"aanbetaling", fr:"dépôt de garantie / acompte", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"notariskosten", fr:"frais de notaire", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"meerwaarde vastgoed", fr:"plus-value immobilière", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"kadastrale gegevens", fr:"cadastre", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"grensbepaling", fr:"bornage", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"landmeter", fr:"géomètre-expert", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"erfdienstbaarheid", fr:"servitude", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"VvE / mede-eigendom", fr:"copropriété", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"breukdelen", fr:"tantièmes", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"VvE-beheerder", fr:"syndic de copropriété", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"huishoudelijk reglement", fr:"règlement de copropriété", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"eigenaarsvergadering", fr:"assemblée générale (AG)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"notulen", fr:"procès-verbal (PV)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"Carrez-oppervlakte", fr:"surface privative (loi Carrez)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"huurcontract (kale huur)", fr:"bail d’habitation (nu)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"huurcontract gemeubileerd", fr:"bail meublé", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"plaatsbeschrijving", fr:"état des lieux (entrée/sortie)", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"huurwaarborg", fr:"dépôt de garantie", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"huurkwitantie", fr:"quittance de loyer", status:"actueel", cats:["Notariaat & Vastgoed"] },
+    { nl:"woonverzekering", fr:"assurance habitation", status:"actueel", cats:["Notariaat & Vastgoed"] },
+
+    // — Verblijfsrecht & Admin
+    { nl:"verblijfsvergunning", fr:"carte de séjour", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"langverblijfsvisum (VLS-TS)", fr:"visa de long séjour valant titre de séjour", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"meerjarige kaart", fr:"carte pluriannuelle", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"permanent verblijfsrecht", fr:"carte de résident", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"ontvangstbewijs aanvraag", fr:"récépissé", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"bewijs van adres", fr:"justificatif de domicile", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"woonverklaring (inwoning)", fr:"attestation d’hébergement", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"identiteitsbewijs", fr:"pièce d’identité", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"bankrekeningidentificatie", fr:"relevé d’identité bancaire (RIB)", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"aangetekend met ontvangst", fr:"lettre recommandée avec accusé de réception (AR/RAR)", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"Cerfa-formulier", fr:"formulaire Cerfa n°…", status:"actueel", cats:["Verblijfsrecht & Admin"] },
+    { nl:"overheidslogin", fr:"FranceConnect", status:"actueel", cats:["Verblijfsrecht & Admin","Belastingen & Bercy","Toeslagen & Sociaal"] },
+
+    // — Gezondheid & Sociale Zekerheid
+    { nl:"zorgverzekering (kaart)", fr:"carte Vitale", status:"actueel", cats:["Gezondheid & SZ"], source:{label:"Ameli — Carte Vitale", url:"https://www.ameli.fr/assure/droits-demarches/carte-vitale"} },
+    { nl:"zorgrechten-verklaring", fr:"attestation de droits", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"huisartskeuze", fr:"médecin traitant", status:"actueel", cats:["Gezondheid & SZ"], source:{label:"Ameli — Médecin traitant", url:"https://www.ameli.fr/assure/droits-demarches/medecin-traitant"} },
+    { nl:"sociale zekerheidsnummer", fr:"numéro de sécurité sociale", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"CPAM (lokale kas)", fr:"CPAM (Caisse Primaire d’Assurance Maladie)", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"aanvullende verzekering", fr:"mutuelle (complémentaire santé)", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"langdurige aandoening", fr:"ALD (affection de longue durée)", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"universele dekking", fr:"PUMA (protection universelle maladie)", status:"actueel", cats:["Gezondheid & SZ"] },
+    { nl:"zorgsteun lage inkomens", fr:"CSS (complémentaire santé solidaire)", status:"actueel", cats:["Gezondheid & SZ","Toeslagen & Sociaal"], source:{label:"Service-Public — CSS", url:"https://www.service-public.fr/particuliers/vosdroits/F10027"} },
+    { nl:"EHIC (Europese zorgpas)", fr:"CEAM (carte européenne d’assurance maladie)", status:"actueel", cats:["Gezondheid & SZ"] },
+
+    // — Belastingen & Bercy
+    { nl:"ministerie Economie/Financiën", fr:"ministère de l’Économie et des Finances (“Bercy”)", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"belastingdienst (FR)", fr:"DGFiP (Direction générale des Finances publiques)", status:"actueel", cats:["Belastingen & Bercy"], source:{label:"impots.gouv.fr", url:"https://www.impots.gouv.fr"} },
+    { nl:"belastingaangifte", fr:"déclaration de revenus", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"aanslagbiljet", fr:"avis d’impôt", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"bronheffing", fr:"prélèvement à la source", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"tarief bronheffing", fr:"taux de prélèvement", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"fiscaal huishouden", fr:"foyer fiscal", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"gezinsquotiënt", fr:"quotient familial", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"fiscaal referentie-inkomen", fr:"revenu fiscal de référence (RFR)", status:"actueel", cats:["Belastingen & Bercy","Toeslagen & Sociaal"] },
+    { nl:"btw", fr:"TVA", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"intracommunautair btw-nummer", fr:"numéro de TVA intracommunautaire", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"vermogensbelasting vastgoed", fr:"IFI (impôt sur la fortune immobilière)", status:"actueel", cats:["Belastingen & Bercy"] },
+    { nl:"overdrachtsbelasting", fr:"droits de mutation", status:"actueel", cats:["Belastingen & Bercy","Notariaat & Vastgoed"] },
+
+    // — Toeslagen & Sociaal (CAF/MSA/Action Logement/France Travail)
+    { nl:"CAF (kinderbijslagfonds)", fr:"Caisse d’Allocations Familiales (CAF)", status:"actueel", cats:["Toeslagen & Sociaal"], source:{label:"caf.fr", url:"https://www.caf.fr"} },
+    { nl:"MSA (landbouwfonds)", fr:"Mutualité Sociale Agricole (MSA)", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"portal sociale rechten", fr:"MesDroitsSociaux.gouv.fr", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"werkzoekenden-dienst", fr:"France Travail (ex-Pôle emploi)", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"huurtoeslagen (algemeen)", fr:"aides au logement", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"] },
+    { nl:"APL (huurtoeslag)", fr:"aide personnalisée au logement (APL)", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"], source:{label:"Service-Public — APL", url:"https://www.service-public.fr/particuliers/vosdroits/F12006"} },
+    { nl:"ALS (sociale huurtoeslag)", fr:"allocation de logement social (ALS)", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"] },
+    { nl:"ALF (gezins-huurtoeslag)", fr:"allocation de logement familiale (ALF)", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"] },
+    { nl:"Garantie Visale", fr:"Garantie Visale (Action Logement)", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"], source:{label:"Visale", url:"https://www.visale.fr"} },
+    { nl:"Loca-Pass (voorschot/waarborg)", fr:"avance Loca-Pass", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"] },
+    { nl:"mobiliteitssteun (verhuizen voor werk)", fr:"aide à la mobilité (Action Logement)", status:"actueel", cats:["Toeslagen & Sociaal","Wonen & Nuts"] },
+    { nl:"werkloosheidsuitkering", fr:"ARE (allocation d’aide au retour à l’emploi)", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"aanvullende werkloosheidssteun", fr:"ASS (allocation de solidarité spécifique)", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"inkomensaanvulling lage lonen", fr:"prime d’activité", status:"actueel", cats:["Toeslagen & Sociaal"], source:{label:"Service-Public — Prime d’activité", url:"https://www.service-public.fr/particuliers/vosdroits/F2882"} },
+    { nl:"minimuminkomen", fr:"RSA (revenu de solidarité active)", status:"actueel", cats:["Toeslagen & Sociaal"], source:{label:"Service-Public — RSA", url:"https://www.service-public.fr/particuliers/vosdroits/F19778"} },
+    { nl:"invaliditeitsuitkering (volwassenen)", fr:"AAH (allocation aux adultes handicapés)", status:"actueel", cats:["Toeslagen & Sociaal","Handicap"] },
+    { nl:"kind met beperking (toeslag)", fr:"AEEH (allocation d’éducation de l’enfant handicapé)", status:"actueel", cats:["Toeslagen & Sociaal","Handicap"] },
+    { nl:"persoonscompensatie", fr:"PCH (prestation de compensation du handicap)", status:"actueel", cats:["Toeslagen & Sociaal","Handicap"] },
+    { nl:"loket handicap", fr:"MDPH (Maison départementale des personnes handicapées)", status:"actueel", cats:["Toeslagen & Sociaal","Handicap"] },
+    { nl:"minimumouderdom", fr:"ASPA (allocation de solidarité aux personnes âgées)", status:"actueel", cats:["Toeslagen & Sociaal","Senioren"] },
+    { nl:"thuiszorg/ouderenzorg", fr:"APA (allocation personnalisée d’autonomie)", status:"actueel", cats:["Toeslagen & Sociaal","Senioren"] },
+    { nl:"energiecheque", fr:"chèque énergie", status:"actueel", cats:["Toeslagen & Sociaal","Energie"], source:{label:"chequeenergie.gouv.fr", url:"https://www.chequeenergie.gouv.fr"} },
+    { nl:"brandstofcompensatie (campagnes)", fr:"indemnité carburant", status:"actueel", cats:["Toeslagen & Sociaal","Energie"] },
+    { nl:"prijsplafond energie", fr:"bouclier tarifaire (énergie)", status:"actueel", cats:["Toeslagen & Sociaal","Energie"] },
+    { nl:"voedselhulp", fr:"aide alimentaire / épicerie sociale", status:"actueel", cats:["Toeslagen & Sociaal"] },
+    { nl:"sociaal gemeenteloket", fr:"CCAS (Centre communal d’action sociale)", status:"actueel", cats:["Toeslagen & Sociaal"] },
+
+    // — Onderwijs
+    { nl:"schoolinschrijving", fr:"inscription scolaire", status:"actueel", cats:["Onderwijs"] },
+    { nl:"bewijs van inschrijving", fr:"certificat de scolarité", status:"actueel", cats:["Onderwijs"] },
+    { nl:"basisschool", fr:"école élémentaire", status:"actueel", cats:["Onderwijs"] },
+    { nl:"middelbare school (onderbouw)", fr:"collège", status:"actueel", cats:["Onderwijs"] },
+    { nl:"middelbare school (bovenbouw)", fr:"lycée", status:"actueel", cats:["Onderwijs"] },
+    { nl:"onderwijsdienst", fr:"rectorat / académie", status:"actueel", cats:["Onderwijs"] },
+    { nl:"buitenschoolse opvang", fr:"périscolaire", status:"actueel", cats:["Onderwijs"] },
+    { nl:"schoolkantine", fr:"cantine scolaire", status:"actueel", cats:["Onderwijs"] },
+    { nl:"studiebeurs (soc. criteria)", fr:"bourse sur critères sociaux (CROUS)", status:"actueel", cats:["Onderwijs"] },
+
+    // — Voertuigen
+    { nl:"kentekenbewijs", fr:"certificat d’immatriculation (carte grise)", status:"actueel", cats:["Voertuigen"] },
+    { nl:"APK", fr:"contrôle technique", status:"actueel", cats:["Voertuigen"] },
+    { nl:"rijbewijs", fr:"permis de conduire", status:"actueel", cats:["Voertuigen"] },
+    { nl:"omwisseling rijbewijs", fr:"échange du permis de conduire", status:"actueel", cats:["Voertuigen"] },
+    { nl:"milieusticker", fr:"vignette Crit’Air", status:"actueel", cats:["Voertuigen"] },
+    { nl:"autoverzekering", fr:"assurance auto", status:"actueel", cats:["Voertuigen"] },
+    { nl:"Europees schadeformulier", fr:"constat amiable", status:"actueel", cats:["Voertuigen"] },
+    { nl:"boete", fr:"amende", status:"actueel", cats:["Voertuigen"] },
+    { nl:"puntenrijbewijs", fr:"permis à points", status:"actueel", cats:["Voertuigen"] },
+
+    // — Wonen & Nuts / Energie
+    { nl:"elektriciteitsleverancier", fr:"fournisseur d’électricité", status:"actueel", cats:["Wonen & Nuts","Energie"] },
+    { nl:"waterrekening", fr:"facture d’eau", status:"actueel", cats:["Wonen & Nuts"] },
+    { nl:"gasleverancier", fr:"fournisseur de gaz", status:"actueel", cats:["Wonen & Nuts","Energie"] },
+    { nl:"aansluiting", fr:"raccordement", status:"actueel", cats:["Wonen & Nuts"] },
+    { nl:"meterstand", fr:"relevé de compteur", status:"actueel", cats:["Wonen & Nuts"] },
+    { nl:"afvalinzameling", fr:"collecte des déchets", status:"actueel", cats:["Wonen & Nuts"] },
+    { nl:"milieustraat", fr:"déchèterie / déchetterie", status:"actueel", cats:["Wonen & Nuts"] },
+    { nl:"hoofdverblijf", fr:"résidence principale", status:"actueel", cats:["Wonen & Nuts","Belastingen & Bercy"] },
+    { nl:"seizoensverblijf", fr:"résidence secondaire", status:"actueel", cats:["Wonen & Nuts"] },
+
+    // — Werk & Ondernemen (compact)
+    { nl:"micro-ondernemer", fr:"micro-entrepreneur", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"inschrijving (micro)", fr:"URSSAF (inscription)", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"SIREN", fr:"SIREN", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"SIRET", fr:"SIRET", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"code APE/NAF", fr:"code APE/NAF", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"factuur", fr:"facture", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"offerte", fr:"devis", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"bestelbon", fr:"bon de commande", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"voorschot", fr:"acompte", status:"actueel", cats:["Werk & Ondernemen"] },
+    { nl:"loonstrook", fr:"fiche de paie", status:"actueel", cats:["Werk & Ondernemen"] },
+
+    // — Justitie (kort)
+    { nl:"gerechtsdeurwaarder (fusie)", fr:"commissaire de justice", status:"actueel", cats:["Justitie"] },
+    { nl:"informele melding politie", fr:"main courante", status:"actueel", cats:["Justitie"] },
+    { nl:"rechtbank eerste aanleg", fr:"tribunal judiciaire", status:"actueel", cats:["Justitie"] },
+    { nl:"executeur testamentair", fr:"exécuteur testamentaire", status:"actueel", cats:["Justitie","Notariaat & Vastgoed"] }
+  ];
+  </script>
+
+  <!-- App -->
+  <script>
+    // Verberg JS-hint zodra scripts draaien
+    (function(){ try{ var h=document.getElementById('js-hint'); if(h) h.style.display='none'; }catch(e){} })();
+
+    // Normaliseer (accentvrij)
+    const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+    const state = { dir:"NLFR", q:"", cat:"" };
+
+    // Elements
+    const elQ = document.getElementById("q");
+    const elList = document.getElementById("list");
+    const elMeta = document.getElementById("meta");
+    const btnNLFR = document.getElementById("dir-nlfr");
+    const btnFRNL = document.getElementById("dir-frnl");
+    const btnClear = document.getElementById("clear");
+    const elCat = document.getElementById("cat");
+    const freeText = document.getElementById("freeText");
+    const gtNLFR = document.getElementById("gt-nlfr");
+    const gtFRNL = document.getElementById("gt-frnl");
+
+    // Verrijk dropdown met alle categorieën uit data (bovenop fallback)
+    (function fillCategories(){
+      const existing = new Set();
+      for (let i=0; i<elCat.options.length; i++) existing.add(elCat.options[i].value || elCat.options[i].textContent);
+      const set = new Set();
+      TERMS.forEach(t => (t.cats||[]).forEach(c => set.add(c)));
+      [...set].sort((a,b)=>a.localeCompare(b)).forEach(c=>{
+        if(!existing.has(c)){
+          const opt = document.createElement("option");
+          opt.value = c; opt.textContent = c;
+          elCat.appendChild(opt);
+        }
+      });
+    })();
+
+    // Helpers
+    function badge(status){
+      const base = "display:inline-block; padding:2px 8px; border-radius:999px; font-weight:800; font-size:12px; border:1px solid ";
+      if((status||"").toLowerCase()==="verouderd") return `<span style="${base}#b02a37; color:#b02a37;">Verouderd</span>`;
+      return `<span style="${base}#198754; color:#198754;">Actueel</span>`;
+    }
+    function escapeHTML(s){ return (s||"").toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+    function copyText(text, btn){
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(()=>flash(btn));
+      } else {
+        const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand("copy"); flash(btn);} finally{ document.body.removeChild(ta); }
+      }
+    }
+    function flash(btn){
+      if(!btn) return;
+      const old = btn.innerText;
+      btn.innerText="Gekopieerd!"; btn.style.background="#198754"; btn.style.borderColor="#198754"; btn.style.color="#fff";
+      setTimeout(()=>{ btn.innerText=old; btn.style.background="#f7f7f7"; btn.style.borderColor="#ddd"; btn.style.color="#333"; },900);
+    }
+    function speakFR(text){
+      if(!("speechSynthesis" in window)) return;
+      const utt = new SpeechSynthesisUtterance(text);
+      const vs = speechSynthesis.getVoices(); const fr = vs.find(v=>/fr/i.test(v.lang));
+      if(fr) utt.voice=fr; utt.lang="fr-FR"; speechSynthesis.speak(utt);
+    }
+    function openGT(text, sl, tl){
+      const url=`https://translate.google.com/?sl=${encodeURIComponent(sl)}&tl=${encodeURIComponent(tl)}&text=${encodeURIComponent(text)}&op=translate`;
+      window.open(url, "_blank", "noopener");
+    }
+
+    // Render
+    function render(){
+      const qn = norm(state.q);
+      let rows = TERMS.slice();
+
+      if(state.cat){ rows = rows.filter(r => (r.cats||[]).includes(state.cat)); }
+      if(qn){
+        rows = rows.filter(r=>{
+          const hay = [r.nl, r.fr, r.status, (r.cats||[]).join(" "), r.note, (r.source&&r.source.label)||""].map(norm).join(" ");
+          return hay.indexOf(qn) !== -1;
+        });
+      }
+      rows.sort((a,b)=>{
+        const A = state.dir==="NLFR" ? norm(a.nl) : norm(a.fr);
+        const B = state.dir==="NLFR" ? norm(b.nl) : norm(b.fr);
+        return A.localeCompare(B);
+      });
+
+      elMeta.textContent = `${rows.length} resultaat/ resultaten · richting ${state.dir==="NLFR"?"NL→FR":"FR→NL"}${state.cat?` · categorie: ${state.cat}`:""}`;
+
+      elList.innerHTML="";
+      rows.forEach(r=>{
+        const left = state.dir==="NLFR" ? r.nl : r.fr;
+        const right= state.dir==="NLFR" ? r.fr : r.nl;
+
+        const card = document.createElement("div");
+        card.setAttribute("role","listitem");
+        card.style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;";
+
+        // Rij 1: titel + acties
+        const row1 = document.createElement("div");
+        row1.style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between;";
+
+        const col = document.createElement("div");
+        col.style="min-width:0; flex:1;";
+        const title = document.createElement("div");
+        title.style="font-size:16px; font-weight:800; margin:0 0 4px 0;";
+        title.innerHTML = `${escapeHTML(left)} <span style="font-weight:400; color:#aaa;">→</span> <span style="color:#800000;">${escapeHTML(right)}</span>`;
+        col.appendChild(title);
+
+        const meta = document.createElement("div");
+        meta.style="font-size:12px; color:#555; display:flex; gap:8px; align-items:center; flex-wrap:wrap;";
+        const cats = (r.cats||[]).map(c=>`<span style="padding:0 6px; border:1px solid #ddd; border-radius:999px;">${escapeHTML(c)}</span>`).join(" ");
+        meta.innerHTML = `${badge(r.status)} ${cats}`;
+        col.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;";
+        const bCopy = document.createElement("button");
+        bCopy.type="button"; bCopy.textContent="Kopieer";
+        bCopy.style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:8px 10px; border-radius:10px; font-size:13px;";
+        bCopy.onclick=()=>copyText(state.dir==="NLFR" ? r.fr : r.nl, bCopy);
+        const bSpeak = document.createElement("button");
+        bSpeak.type="button"; bSpeak.textContent="Uitspraak";
+        bSpeak.style="cursor:pointer; border:1px solid #ddd; background:#f7f7f7; color:#333; padding:8px 10px; border-radius:10px; font-size:13px;";
+        bSpeak.onclick=()=>speakFR(state.dir==="NLFR" ? r.fr : r.nl);
+        const bGT = document.createElement("button");
+        bGT.type="button"; bGT.textContent="Google Translate";
+        bGT.style="cursor:pointer; border:1px solid #800000; background:#fff; color:#800000; padding:8px 10px; border-radius:10px; font-size:13px; font-weight:700;";
+        bGT.onclick=()=>openGT(state.dir==="NLFR" ? r.fr : r.nl, state.dir==="NLFR"?"fr":"nl", state.dir==="NLFR"?"nl":"fr");
+        actions.appendChild(bCopy); actions.appendChild(bSpeak); actions.appendChild(bGT);
+
+        row1.appendChild(col); row1.appendChild(actions);
+        card.appendChild(row1);
+
+        // Details
+        const hasDetails = r.note || (r.source && r.source.url);
+        if(hasDetails){
+          const hr = document.createElement("div"); hr.style="height:8px;"; card.appendChild(hr);
+          const details = document.createElement("div");
+          details.style="background:#fafafa; border:1px solid #eee; border-radius:10px; padding:10px;";
+          if(r.note){
+            const p = document.createElement("div");
+            p.style="font-size:13px; color:#333; margin-bottom:6px;";
+            p.textContent=r.note; details.appendChild(p);
+          }
+          if(r.source && r.source.url){
+            const a = document.createElement("a"); a.href=r.source.url; a.target="_blank"; a.rel="noopener";
+            a.style="font-size:13px; color:#0b5ed7; text-decoration:none; font-weight:700;";
+            a.textContent = "🔗 " + (r.source.label || r.source.url);
+            details.appendChild(a);
+          }
+          card.appendChild(details);
+        }
+
+        elList.appendChild(card);
+      });
+    }
+
+    // Events
+    elQ.addEventListener("input", e => { state.q = e.target.value; render(); });
+    btnClear.addEventListener("click", ()=>{ elQ.value=""; state.q=""; elCat.value=""; state.cat=""; elQ.focus(); render(); });
+    elCat.addEventListener("change", e => { state.cat = e.target.value; render(); });
+    btnNLFR.addEventListener("click", ()=>{
+      state.dir="NLFR";
+      btnNLFR.style.background="#800000"; btnNLFR.style.color="#fff";
+      btnFRNL.style.background="#fff"; btnFRNL.style.color="#800000";
+      btnNLFR.setAttribute("aria-pressed","true"); btnFRNL.setAttribute("aria-pressed","false");
+      render();
+    });
+    btnFRNL.addEventListener("click", ()=>{
+      state.dir="FRNL";
+      btnFRNL.style.background="#800000"; btnFRNL.style.color="#fff";
+      btnNLFR.style.background="#fff"; btnNLFR.style.color="#800000";
+      btnFRNL.setAttribute("aria-pressed","true"); btnNLFR.setAttribute("aria-pressed","false");
+      render();
+    });
+    gtNLFR.addEventListener("click", ()=>{ const t = freeText.value.trim(); if(t) openGT(t,"nl","fr"); });
+    gtFRNL.addEventListener("click", ()=>{ const t = freeText.value.trim(); if(t) openGT(t,"fr","nl"); });
+
+    // Init
+    render();
+    setTimeout(()=>{ try{ document.getElementById("q").focus(); }catch(e){} }, 80);
+  </script>
+</body>
+</html>
