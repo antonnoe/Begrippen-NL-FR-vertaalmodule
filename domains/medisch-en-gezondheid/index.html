@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>nl ↔ fr begrippenlijst — medisch en gezondheid</title>
+  <style>
+    :root{--brand:#800000}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;margin:0;background:#fff;color:#111}
+    header,main{max-width:900px;margin:0 auto;padding:16px}
+    h1{font-size:20px;margin:16px 0}
+    .topbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{border:1px solid #ddd;border-radius:999px;padding:6px 10px;font-size:14px;background:#fafafa}
+    input[type="search"],select{padding:8px 10px;border:1px solid #ccc;border-radius:8px;min-width:220px}
+    .btn{border:1px solid var(--brand);color:var(--brand);background:#fff;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .btn:hover{background:var(--brand);color:#fff}
+    .count{color:#555;font-size:14px;margin:6px 0 12px}
+    .card{border:1px solid #eee;border-radius:12px;padding:12px;margin:10px 0}
+    .term{display:flex;justify-content:space-between;gap:12px}
+    .term h3{margin:0;font-size:16px}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .tag{font-size:12px;padding:2px 8px;border:1px solid #ddd;border-radius:999px;background:#fafafa;color:#333}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .actions{display:flex;gap:6px;flex-wrap:wrap}
+    .link{color:var(--brand);text-decoration:none;border-bottom:1px dotted var(--brand)}
+    footer{margin:32px 0 24px;color:#777;font-size:12px}
+    @media (max-width:640px){.term{flex-direction:column;}}
+  </style>
+</head>
+<body>
+<header>
+  <a class="link" href="/Begrippen-NL-FR-vertaalmodule/">&larr; andere begrippenlijsten</a>
+  <h1>nl ↔ fr begrippenlijst — medisch en gezondheid</h1>
+  <div class="topbar">
+    <input id="q" type="search" placeholder="zoek in deze lijst (nl of fr)…" />
+    <select id="cat"><option value="">alle categorieën</option></select>
+    <select id="subcat"><option value="">alle subcategorieën</option></select>
+    <select id="dir">
+      <option value="nl2fr">nl → fr</option>
+      <option value="fr2nl">fr → nl</option>
+    </select>
+    <button class="btn" id="clear">wis</button>
+  </div>
+  <div class="count" id="count"></div>
+</header>
+
+<main id="list" aria-live="polite"></main>
+
+<footer><div class="row">
+  <a class="link" href="https://infofrankrijk.com" target="_blank" rel="noopener">zoek verder op infofrankrijk.com</a>
+  <span>&nbsp;·&nbsp;</span>
+  <a class="link" href="https://nederlanders.fr" target="_blank" rel="noopener">zoek verder op nederlanders.fr</a>
+</div></footer>
+
+<script>
+const DATA_URL = "/Begrippen-NL-FR-vertaalmodule/data/medisch-en-gezondheid.json?v=20251025";
+
+const el = s => document.querySelector(s);
+const list = el("#list"), q = el("#q"), cat = el("#cat"), subcat = el("#subcat"), dir = el("#dir"), cnt = el("#count");
+
+let TERMS = [], CATS = new Set(), SUBS = new Set();
+
+fetch(DATA_URL, {cache:"no-store"})
+  .then(r => r.json())
+  .then(json => {
+    TERMS = Array.isArray(json.terms) ? json.terms : [];
+    TERMS = TERMS.map(t => ({
+      nl: t.nl || "", fr: t.fr || "",
+      cats: Array.isArray(t.cats)? t.cats: [],
+      subcats: Array.isArray(t.subcats)? t.subcats: [],
+      note: t.note || "", aliases: Array.isArray(t.aliases)? t.aliases: [],
+      more_info_url: t.more_info_url || ""
+    }));
+    TERMS.forEach(t => { t.cats.forEach(CATS.add, CATS); t.subcats.forEach(SUBS.add, SUBS); });
+    fillSelect(cat, [...CATS].sort(), "alle categorieën");
+    fillSelect(subcat, [...SUBS].sort(), "alle subcategorieën");
+    render();
+  })
+  .catch(e => { list.innerHTML = `<p>Kon data niet laden.</p>`; console.error(e); });
+
+function fillSelect(sel, items, firstLabel){
+  sel.innerHTML = `<option value="">${firstLabel}</option>` + items.map(v=>`<option>${escapeHtml(v)}</option>`).join("");
+}
+
+function escapeHtml(s){ return (s+"").replace(/[&<>"/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+
+function normalize(s){ return (s||"").toLocaleLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,""); }
+
+function matchQuery(t, needle){
+  if(!needle) return true;
+  const fields = [t.nl, t.fr, ...(t.aliases||[])].map(normalize).join(" || ");
+  return fields.includes(needle);
+}
+
+function render(){
+  const needle = normalize(q.value.trim());
+  const c = cat.value, sc = subcat.value, nl2fr = (dir.value==="nl2fr");
+
+  let rows = TERMS.filter(t => matchQuery(t, needle))
+                  .filter(t => !c || t.cats.includes(c))
+                  .filter(t => !sc || t.subcats.includes(sc));
+
+  cnt.textContent = `${rows.length} resultaten · medisch en gezondheid · ${nl2fr? "nl→fr":"fr→nl"}`;
+
+  list.innerHTML = rows.map(t => card(t, nl2fr)).join("") || `<p>Geen resultaten.</p>`;
+}
+
+function card(t, nl2fr){
+  const left = nl2fr ? t.nl : t.fr;
+  const right = nl2fr ? t.fr : t.nl;
+  const cats = (t.cats||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("");
+  const subs = (t.subcats||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("");
+  const note = t.note ? `<div class="meta"><span class="tag">[?]</span><span>${escapeHtml(t.note)}</span></div>` : "";
+  const more = (t.more_info_url || "").trim();
+  const moreHref = more || "https://infofrankrijk.com/test-lexicon-test/";
+  const query = encodeURIComponent((left+" "+right).trim());
+  const gf = `https://www.google.com/search?q=site%3Ainfofrankrijk.com+OR+site%3Anederlanders.fr+${query}`;
+
+  return `<article class="card">
+    <div class="term">
+      <h3>${escapeHtml(left)} <span style="opacity:.5">→</span> ${escapeHtml(right)}</h3>
+      <div class="actions">
+        <button class="btn" onclick="copyText('${escapeJs(right)}')">kopieer</button>
+        <button class="btn" onclick="speak('${escapeJs(right)}')">uitspraak</button>
+        <a class="btn" href="${moreHref}" target="_blank" rel="noopener">meer informatie</a>
+        <div class="pill"><a class="link" href="${gf}" target="_blank" rel="noopener">zoek verder ▾</a></div>
+      </div>
+    </div>
+    <div class="meta">${cats} ${subs}</div>
+    ${note}
+  </article>`;
+}
+
+function escapeJs(s){ return (s||"{}").replace(/['\\\n\r]/g, m => ({ "'":"\\'","\\":"\\\\","\n":"\n","\r":"\r" }[m])); }
+
+function copyText(s){
+  navigator.clipboard?.writeText(s).then(()=>{},()=>{});
+}
+function speak(s){
+  try{
+    const u = new SpeechSynthesisUtterance(s);
+    u.lang = "fr-FR";
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+q.addEventListener("input", render);
+cat.addEventListener("change", render);
+subcat.addEventListener("change", render);
+dir.addEventListener("change", render);
+document.querySelector("#clear").addEventListener("click", ()=>{ q.value=""; cat.value=""; subcat.value=""; dir.value="nl2fr"; render(); });
+</script>
+</body>
+</html>
